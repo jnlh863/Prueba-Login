@@ -21,10 +21,9 @@ namespace MealMasterAPI.Controllers
         [HttpPost("login")]
         public IActionResult LoginUser([FromBody] LoginDTO login)
         {
-            UserTokenDTO tk = _uRepo.LoginUser(login);
-
             try
             {
+                UserTokenDTO tk = _uRepo.LoginUser(login);
                 return StatusCode(StatusCodes.Status202Accepted, new { mensaje = "ok", response = tk });
             }
             catch (Exception ex)
@@ -33,5 +32,24 @@ namespace MealMasterAPI.Controllers
 
             }
         }
+
+        [HttpPost("request-password-reset")]
+        public IActionResult RequestPasswordReset([FromBody] ResetPassDTO reset)
+        {
+            UserTokenDTO token = _uRepo.RequestPasswordReset(reset);
+            var resetLink = Url.Action("ResetPassword", "Account", new { token = token }, Request.Scheme);
+
+
+
+        }
+
+
+
+
+
+
+
+
+
     }
 }

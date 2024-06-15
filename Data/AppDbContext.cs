@@ -18,6 +18,13 @@ namespace MealMasterAPI.Data
                 .WithOne(up => up.user)
                 .HasForeignKey<UserProfile>(up => up.id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserProfile>(e =>
+            {
+                e.HasKey(en => en.id);
+                e.Property(en => en.birthdate).HasColumnType("date");
+            });
+
         }
     }
 }

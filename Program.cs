@@ -34,7 +34,10 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+
+
 builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<IProfile, ProfileRepository>();
 
 builder.Services.AddAutoMapper(typeof(UserMapper));
 

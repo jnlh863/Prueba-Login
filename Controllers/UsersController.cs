@@ -23,15 +23,15 @@ namespace MealMasterAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id:int}")]
-        public IActionResult GetUser(int id)
+        [HttpGet("{id:guid}")]
+        public IActionResult GetUser(Guid id)
         {
-            User user = _uRepo.GetUser(id);
-
-            UserDTO userDto = _mapper.Map<UserDTO>(user);
-
             try
             {
+                User user = _uRepo.GetUser(id);
+
+                UserDTO userDto = _mapper.Map<UserDTO>(user);
+
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = userDto });
             
             }catch(Exception ex)
@@ -57,8 +57,8 @@ namespace MealMasterAPI.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
-        public IActionResult UpdateUser(int id, [FromBody] UserDTO userdto)
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateUser(Guid id, [FromBody] UserDTO userdto)
         {
             try
             {
@@ -72,8 +72,8 @@ namespace MealMasterAPI.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
-        public IActionResult DeleteUser(int id)
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteUser(Guid id)
         {
             try
             {

@@ -4,6 +4,8 @@ namespace MealMasterAPI.Models.Dtos
 {
     public class ProfileDTO
     {
+        public Guid id { get; set; }
+
         public string sex { get; set; } = null!;
 
         public int stature { get; set; }

@@ -10,6 +10,7 @@ namespace MealMasterAPI.Mappers
         public UserMapper()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<UserProfile, ProfileDTO>().ReverseMap();
         }
     }
 }

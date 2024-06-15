@@ -7,17 +7,19 @@ namespace MealMasterAPI.Repository.IRepository
     {
         ICollection<User> GetUsers();
 
-        User GetUser(int userid);
+        User GetUser(Guid userid);
 
         User CreateUser(RegisterDTO user);
 
-        string UpdateUser(int id, UserDTO userdto);
+        string UpdateUser(Guid id, UserDTO userdto);
 
-        string DeleteUser(int userid);
+        string DeleteUser(Guid userid);
+
+        UserTokenDTO RequestPasswordReset(ResetPassDTO request);
 
         UserTokenDTO LoginUser(LoginDTO userDTO);
 
-        string UpdateRol(int id, string role);
+        string UpdateRol(Guid id, string role);
 
         bool Guardar();
     }

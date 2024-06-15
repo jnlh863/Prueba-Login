@@ -24,8 +24,8 @@ namespace MealMasterAPI.Controllers
         }
 
 
-        [HttpPost("{id}/role")]
-        public IActionResult AssignRole(int id, [FromBody] string role)
+        [HttpPost("{id:guid}/role")]
+        public IActionResult AssignRole(Guid id, [FromBody] string role)
         {
             try
             {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MealMasterAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240614182022_localbd")]
-    partial class localbd
+    [Migration("20240615020846_localdb")]
+    partial class localdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace MealMasterAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("birthdate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("protocol")
                         .IsRequired()

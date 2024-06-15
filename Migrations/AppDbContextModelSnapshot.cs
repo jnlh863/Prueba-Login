@@ -60,7 +60,7 @@ namespace MealMasterAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("birthdate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("protocol")
                         .IsRequired()

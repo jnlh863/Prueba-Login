@@ -39,6 +39,8 @@ namespace MealMasterAPI.Repository
                 user = c
             };
 
+            _bd.UsersProfile.Add(us);
+
             Guardar();
             return us;
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MealMasterAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class localbd : Migration
+    public partial class localdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,7 +36,7 @@ namespace MealMasterAPI.Migrations
                     stature = table.Column<int>(type: "int", nullable: false),
                     weight = table.Column<int>(type: "int", nullable: false),
                     protocol = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    birthdate = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
