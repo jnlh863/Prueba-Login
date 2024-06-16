@@ -5,6 +5,7 @@ using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -46,7 +47,7 @@ namespace MealMasterAPI.Repository
             var user = _bd.Users.Find(userid);
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                throw new Exception("User not found.");
             }
             return user;
         }
@@ -80,8 +81,8 @@ namespace MealMasterAPI.Repository
                         new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                Issuer = "mealmasterapi",
-                Audience = "mealmaster.com",
+                Issuer = "logintestapi",
+                Audience = "logintest.com",
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -96,10 +97,9 @@ namespace MealMasterAPI.Repository
 
         }
 
-
-        public UserTokenDTO RequestPasswordReset(ResetPassDTO request) 
+        public UserTokenDTO RequestPasswordResetToken(ForgotPassDTO request) 
         {
-            var user = _bd.Users.Find(request.email);
+            var user = _bd.Users.FirstOrDefault(u => u.email == request.email);
 
             if (user == null)
             {
@@ -117,6 +117,8 @@ namespace MealMasterAPI.Repository
                         new Claim(ClaimTypes.Email, user.email.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = "logintestapi",
+                Audience = "logintest.com",
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -128,6 +130,30 @@ namespace MealMasterAPI.Repository
             };
 
             return ut;
+        }
+
+        public bool ResetPassword(string email, string token, string newpassword)
+        {
+            var principal = GetPrincipalFromExpiredToken(token);
+
+            if (principal == null)
+            {
+                return false;
+            }
+
+            var user = _bd.Users.FirstOrDefault(u => u.email == email);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.password = BCrypt.Net.BCrypt.HashPassword(newpassword);
+
+            _bd.Users.Update(user);
+            Guardar();
+
+            return true;
         }
 
         public string UpdateRol(Guid id, string role)
@@ -179,18 +205,33 @@ namespace MealMasterAPI.Repository
             return _bd.SaveChanges() >= 0 ? true : false;
         }
 
-        /*public void SendPasswordResetEmail(string email, string resetLink)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
-            var client = new SendGridClient("your_api_key");
-            var from = new EmailAddress("no-reply@yourdomain.com", "Your App Name");
-            var subject = "Password Reset";
-            var to = new EmailAddress(email);
-            var plainTextContent = $"Click the link to reset your password: {resetLink}";
-            var htmlContent = $"<a href='{resetLink}'>Click here to reset your password</a>";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var key = Encoding.ASCII.GetBytes(clave);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = "logintestapi",
+                ValidAudience = "logintest.com",
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateLifetime = false 
+            };
 
-            client.SendEmailAsync(msg).Wait();
-        }*/
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+
+            return principal;
+        }
+
 
     }
 }

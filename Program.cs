@@ -5,6 +5,7 @@ using MealMasterAPI.Repository;
 using MealMasterAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -35,9 +36,9 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 });
 
 
-
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IProfile, ProfileRepository>();
+builder.Services.AddScoped<ISendEmail, SendEmail>();
 
 builder.Services.AddAutoMapper(typeof(UserMapper));
 
@@ -57,8 +58,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "mealmasterapi",
-        ValidAudience = "mealmaster.com",
+        ValidIssuer = "logintestapi",
+        ValidAudience = "logintest.com",
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });

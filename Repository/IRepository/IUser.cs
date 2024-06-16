@@ -15,9 +15,11 @@ namespace MealMasterAPI.Repository.IRepository
 
         string DeleteUser(Guid userid);
 
-        UserTokenDTO RequestPasswordReset(ResetPassDTO request);
+        UserTokenDTO RequestPasswordResetToken(ForgotPassDTO request);
 
         UserTokenDTO LoginUser(LoginDTO userDTO);
+
+        bool ResetPassword(string email, string token, string newpassword);
 
         string UpdateRol(Guid id, string role);
 
