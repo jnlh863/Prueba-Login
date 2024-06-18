@@ -23,12 +23,6 @@ namespace MealMasterAPI.Models
         [Required(ErrorMessage = "This field is obligatory")]
         public string protocol { get; set; } = null!;
 
-        [Required(ErrorMessage = "This birth date is obligatory.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        [RegularExpression(@"\d{2}/\d{2}/\d{4}", ErrorMessage = "The date format is not valid. Use dd/MM/yyyy")]
-        public DateTime birthdate { get; set; }
-
         public User user { get; set; }
 
 

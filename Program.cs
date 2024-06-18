@@ -39,6 +39,7 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<IProfile, ProfileRepository>();
 builder.Services.AddScoped<ISendEmail, SendEmail>();
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddAutoMapper(typeof(UserMapper));
 
@@ -104,6 +105,10 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseRouting();
+
 app.UseCors(misReglasCORS);
 
 app.UseAuthentication();
@@ -111,5 +116,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

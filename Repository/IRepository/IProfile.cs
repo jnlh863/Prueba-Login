@@ -7,7 +7,7 @@ namespace MealMasterAPI.Repository.IRepository
     {
         ProfileDTO GetProfile(Guid userid);
 
-        UserProfile CreateProfile(Guid id, ProfileDTO profile);
+        string CreateProfile(Guid id, ProfileDTO profile);
 
         string UpdateProfile(Guid id, ProfileDTO profiledto);
 

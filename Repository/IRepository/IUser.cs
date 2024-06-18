@@ -9,7 +9,7 @@ namespace MealMasterAPI.Repository.IRepository
 
         User GetUser(Guid userid);
 
-        User CreateUser(RegisterDTO user);
+        string CreateUser(RegisterDTO user);
 
         string UpdateUser(Guid id, UserDTO userdto);
 

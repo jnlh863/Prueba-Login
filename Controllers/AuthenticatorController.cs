@@ -12,7 +12,6 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MealMasterAPI.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/auth")]
     public class AuthenticatorController : Controller
@@ -48,14 +47,15 @@ namespace MealMasterAPI.Controllers
             try
             {
                 var token = _uRepo.RequestPasswordResetToken(req);
-                var resetLink = $"{Request.Scheme}://{Request.Host}/api/auth/ResetPassword?token={token.Token}&email={req.email}";
+                var resetLink = Url.Action("ResetPassword", "Authenticator", new { token = token.Token, email = req.email }, Request.Scheme);
+
                 _sendRepo.SendPasswordResetEmail(req.email, resetLink);
 
-                return StatusCode(StatusCodes.Status200OK, new { mensaje = "The email sends in your bandage", response = resetLink });
+                return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = "The email sends in your bandage" });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { mensaje = ex.Message, response = "Hubo un error" });
 
             }
         }
@@ -66,7 +66,7 @@ namespace MealMasterAPI.Controllers
             try
             {
                 var model = new ResetPassDTO { token = token, email = email };
-                return Ok(model);
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -77,20 +77,21 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public IActionResult ResetPassword(string token, string email, [FromBody] CofirmPassDTO model)
+        public IActionResult ResetPassword([FromBody] ResetPassDTO model)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return Ok(model);
-
-                var result = _uRepo.ResetPassword(email, token, model.confirmpassword);
-                if (result)
                 {
-                    return RedirectToAction("ResetPasswordConfirmation");
+                    return BadRequest(ModelState);
                 }
 
-                return Ok(model);
+                var result = _uRepo.ResetPassword(model.email, model.token, model.confirmpassword);
+                if (!result)
+                {
+                    return BadRequest(new { mensaje = "No se pudo restablecer la contraseña" });
+                }
+                return RedirectToAction("ResetPasswordConfirmation");
             }
             catch (Exception ex)
             {
@@ -102,8 +103,9 @@ namespace MealMasterAPI.Controllers
         [HttpGet("ResetPasswordConfirmation")]
         public IActionResult ResetPasswordConfirmation()
         {
-            return Ok();
+            return View();
         }
+
 
     }
 }

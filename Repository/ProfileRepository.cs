@@ -4,6 +4,7 @@ using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MealMasterAPI.Repository
 {
@@ -19,13 +20,13 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public UserProfile CreateProfile(Guid idu, ProfileDTO profile)
+        public string CreateProfile(Guid idu, ProfileDTO profile)
         {
             var c = _bd.Users.Find(idu);
 
             if (c == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                return "User not found.";
             }
 
             UserProfile us = new UserProfile
@@ -35,14 +36,13 @@ namespace MealMasterAPI.Repository
                 stature = profile.stature,
                 weight = profile.weight,
                 protocol = profile.protocol,
-                birthdate = profile.birthdate,
                 user = c
             };
 
             _bd.UsersProfile.Add(us);
 
             Guardar();
-            return us;
+            return "Cambios guardados";
 
         }
 
@@ -72,7 +72,6 @@ namespace MealMasterAPI.Repository
             up.stature = profiledto.stature;
             up.weight = profiledto.weight;
             up.protocol = profiledto.protocol;
-            up.birthdate = profiledto.birthdate;
 
             _bd.UsersProfile.Update(up);
             Guardar();

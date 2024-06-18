@@ -14,7 +14,6 @@ namespace MealMasterAPI.Models.Dtos
 
         public string protocol { get; set; } = null!;
 
-        public DateTime birthdate { get; set; }
 
     }
 }

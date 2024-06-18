@@ -25,8 +25,13 @@ namespace MealMasterAPI.Repository
             clave = Environment.GetEnvironmentVariable("TOKEN");
         }
 
-        public User CreateUser(RegisterDTO user)
+        public string CreateUser(RegisterDTO user)
         {
+            if(user == null)
+            {
+                return "No se guardaron los datos, intentelo de nuevo";
+            }
+
             User us = new User
             {
                 username = user.username,
@@ -38,7 +43,7 @@ namespace MealMasterAPI.Repository
 
             _bd.Users.Add(us);
             Guardar();
-            return us;
+            return "SI";
 
         }
 
@@ -87,10 +92,12 @@ namespace MealMasterAPI.Repository
             };
 
             var token = tok.CreateToken(tokenDescriptor);
+            var u = _bd.Users.FirstOrDefault(u => u.email == loginDTO.email);
 
             UserTokenDTO ut = new UserTokenDTO()
             {
-                Token = tok.WriteToken(token)
+                Token = tok.WriteToken(token),
+                id = u.id
             };
 
             return ut;
@@ -126,7 +133,9 @@ namespace MealMasterAPI.Repository
 
             UserTokenDTO ut = new UserTokenDTO()
             {
-                Token = tok.WriteToken(token)
+                Token = tok.WriteToken(token),
+                id = user.id
+
             };
 
             return ut;
