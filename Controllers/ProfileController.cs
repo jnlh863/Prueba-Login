@@ -64,8 +64,11 @@ namespace MealMasterAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
-
+                if (ex.Message == "User not found.")
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, new { response = "User not found." });
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = ex.Message });
             }
         }
 

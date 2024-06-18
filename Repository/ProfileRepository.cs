@@ -65,7 +65,7 @@ namespace MealMasterAPI.Repository
 
             if (up == null)
             {
-                return "User not found.";
+                throw new Exception("User not found.");
             }
 
             up.sex = profiledto.sex;
