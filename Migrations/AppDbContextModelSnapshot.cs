@@ -59,9 +59,6 @@ namespace MealMasterAPI.Migrations
                     b.Property<Guid>("id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("birthdate")
-                        .HasColumnType("date");
-
                     b.Property<string>("protocol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

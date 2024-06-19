@@ -14,7 +14,7 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRINGL");
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
 var token = Environment.GetEnvironmentVariable("TOKEN");
 var key = Encoding.ASCII.GetBytes(token);
