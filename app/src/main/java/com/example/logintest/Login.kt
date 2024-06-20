@@ -8,11 +8,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.logintest.Responses.UpdateUser
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class Login : AppCompatActivity(){
 
@@ -77,16 +82,15 @@ class Login : AppCompatActivity(){
 
         if (band) {
             CoroutineScope(Dispatchers.IO).launch {
-
                 val call = RetrofitClient.webService.loginUser(LOG)
                 val response = call.body()
 
                 runOnUiThread {
-                    if (response != null && response.token.isNotEmpty()) {
+                    if (response != null && response.response.token?.isNotEmpty() == true) {
                         val editor = preferences.edit()
-                        editor.putString("token", response.token)
-                        editor.putString("id", response.id)
-                        editor.commit()
+                        editor.putString("token", response.response.token)
+                        editor.putString("id", response.response.id)
+                        editor.apply()
 
                         Toast.makeText(this@Login, "Bienvenido", Toast.LENGTH_SHORT).show()
                         limpiarObjeto()

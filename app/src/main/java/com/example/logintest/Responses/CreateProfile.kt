@@ -1,5 +1,7 @@
 package com.example.logintest.Responses
 
+import java.util.UUID
+
 data class CreateProfile(
     var id : String,
     var sex : String,

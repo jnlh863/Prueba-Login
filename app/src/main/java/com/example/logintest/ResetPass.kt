@@ -1,5 +1,6 @@
 package com.example.logintest
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -53,18 +54,19 @@ class ResetPass : AppCompatActivity(){
                 val response = call.body()
 
                 runOnUiThread {
-                    if (response.toString() == "The email sends in your bandage") {
+                    if (response != null) {
+                        if (response.response == "The email sends in your bandage") {
 
-                        Toast.makeText(this@ResetPass, "The email sends in your bandage", Toast.LENGTH_SHORT).show()
-                        limpiarObjeto()
+                            val builder = AlertDialog.Builder(this@ResetPass)
+                            builder.setMessage("The email sends in your bandage")
+                                .setCancelable(false)
+                                .setPositiveButton("Cerrar") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                            val alertDialog = builder.create()
+                            alertDialog.show()
 
-                        val intent = Intent(this@ResetPass, MainActivity::class.java)
-                        startActivity(intent)
-
-                        limpiarcampos()
-
-                        finish()
-
+                        }
                     } else {
                         Toast.makeText(
                             this@ResetPass,
@@ -77,18 +79,5 @@ class ResetPass : AppCompatActivity(){
         }
 
     }
-    private fun limpiarcampos() {
-        correo.setText("")
-    }
-
-    private fun limpiarObjeto() {
-        this.RESET.email = ""
-    }
-
-
-
-
-
-
 
 }

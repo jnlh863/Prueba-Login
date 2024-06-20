@@ -99,19 +99,21 @@ class Register : AppCompatActivity() {
                 val response = call.body()
 
                 runOnUiThread {
-                    if (response.toString() == "SI") {
+                    if (response != null) {
+                        if (response.response == "SI") {
 
-                        Toast.makeText(this@Register, "Bienvenido", Toast.LENGTH_SHORT).show()
-                        limpiarObjeto()
+                            Toast.makeText(this@Register, "Bienvenido", Toast.LENGTH_SHORT).show()
+                            limpiarObjeto()
 
-                        val intent = Intent(this@Register, Login::class.java)
-                        startActivity(intent)
+                            val intent = Intent(this@Register, Login::class.java)
+                            startActivity(intent)
 
-                        limpiarcampos()
+                            limpiarcampos()
 
-                        finish()
+                            finish()
 
-                    } else {
+                        }
+                    }else {
                         Toast.makeText(
                             this@Register,
                             "Error de al guardar informacion, intentelo de nuevo",

@@ -1,6 +1,9 @@
 package com.example.logintest.Responses
 
+import com.google.gson.annotations.SerializedName
+import java.util.UUID
+
 data class Token(
-    val token : String,
-    val id : String
+    @SerializedName("token") val token : String,
+    @SerializedName("id") val id : String
 )
