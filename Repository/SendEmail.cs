@@ -26,7 +26,7 @@ namespace MealMasterAPI.Repository
                 senderAddress: "DoNotReply@0956d554-7718-46a5-9e08-1780a9e31fc1.azurecomm.net",
                 recipientAddress: email,
                 subject: "Password Reset",
-                htmlContent: $"<a href=\"{resetLink}\">Click here to reset your password</a>",
+                htmlContent: $"<html><body><h2>Restablecimiento de contraseña</h2><p>Hola,</p><p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.</p><p>Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:</p><p><a href=\"{resetLink}\">Click aquí para restablecer tu contraseña</a></p><p>Si no solicitaste este cambio, por favor ignora este correo.</p><p>Gracias,</p><p>Tu equipo de soporte</p></body></html>", 
                 plainTextContent: $"Click the link to reset your password: {resetLink}");
 
         }

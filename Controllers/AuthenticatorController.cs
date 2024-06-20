@@ -89,21 +89,16 @@ namespace MealMasterAPI.Controllers
                 var result = _uRepo.ResetPassword(model.email, model.token, model.confirmpassword);
                 if (!result)
                 {
-                    return BadRequest(new { mensaje = "No se pudo restablecer la contraseña" });
+                    return StatusCode(StatusCodes.Status400BadRequest, new { response = "Hubo un error, intentelo de nuevo" });
                 }
-                return RedirectToAction("ResetPasswordConfirmation");
+
+                return StatusCode(StatusCodes.Status200OK, new { response = "La contraseña se actualizo correctamente" });
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, new { mensaje = ex.Message });
 
             }
-        }
-
-        [HttpGet("ResetPasswordConfirmation")]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
         }
 
 
