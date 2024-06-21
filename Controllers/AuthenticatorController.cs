@@ -15,7 +15,7 @@ namespace MealMasterAPI.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthenticatorController : Controller
+    public class AuthenticatorController : Controller 
     {
         private readonly IUser _uRepo;
 
