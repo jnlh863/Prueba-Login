@@ -2,7 +2,7 @@
 
 namespace MealMasterAPI.Models.Dtos
 {
-    public class LoginDto
+    public class LoginUserDto
     {
         [Required]
         [MaxLength(50, ErrorMessage = "The maximum number of characters is 50.")]

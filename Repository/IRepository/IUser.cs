@@ -7,15 +7,15 @@ namespace MealMasterAPI.Repository.IRepository
     {
         User GetUser(Guid userid);
 
-        string CreateUser(RegisterDto user);
+        string CreateUser(RegisterUserDto user);
 
-        string UpdateUser(Guid id, UserDto userdto);
+        string UpdateUser(Guid id, UserInfoDto userdto);
 
         string DeleteUser(Guid userid);
 
-        UserTokenDto RequestPasswordResetToken(ForgotPassDto request);
+        TokenUserDto RequestPasswordResetToken(ForgotPasswordDto request);
 
-        UserTokenDto LoginUser(LoginDto userDTO);
+        TokenUserDto LoginUser(LoginUserDto userDTO);
 
         bool ResetPassword(string email, string token, string newpassword);
 

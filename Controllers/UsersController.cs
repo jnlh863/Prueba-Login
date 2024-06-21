@@ -31,7 +31,7 @@ namespace MealMasterAPI.Controllers
             {
                 User user = _uRepo.GetUser(id);
 
-                UserDto userDto = _mapper.Map<UserDto>(user);
+                UserInfoDto userDto = _mapper.Map<UserInfoDto>(user);
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = userDto });
             
@@ -44,7 +44,7 @@ namespace MealMasterAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult CreateUser([FromBody] RegisterDto user)
+        public IActionResult CreateUser([FromBody] RegisterUserDto user)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserDto userdto)
+        public IActionResult UpdateUser(Guid id, [FromBody] UserInfoDto userdto)
         {
             try
             {

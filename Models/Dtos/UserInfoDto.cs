@@ -2,7 +2,7 @@
 
 namespace MealMasterAPI.Models.Dtos
 {
-    public class UserDto
+    public class UserInfoDto
     {
         [JsonRequired]
         public Guid id { get; set; } 

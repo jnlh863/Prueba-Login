@@ -5,11 +5,11 @@ namespace MealMasterAPI.Repository.IRepository
 {
     public interface IProfile
     {
-        ProfileDto GetProfile(Guid userid);
+        ProfileUserDto GetProfile(Guid userid);
 
-        string CreateProfile(Guid id, ProfileDto profile);
+        string CreateProfile(Guid id, ProfileUserDto profile);
 
-        string UpdateProfile(Guid id, ProfileDto profiledto);
+        string UpdateProfile(Guid id, ProfileUserDto profiledto);
 
         bool Guardar();
     }

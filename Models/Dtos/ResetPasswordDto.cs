@@ -2,7 +2,7 @@
 
 namespace MealMasterAPI.Models.Dtos
 {
-    public class ResetPassDto
+    public class ResetPasswordDto
     {
         public string email { get; set; } = null!;
         public string token { get; set; } = null!;

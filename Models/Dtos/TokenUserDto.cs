@@ -1,6 +1,6 @@
 ﻿namespace MealMasterAPI.Models.Dtos
 {
-    public class UserTokenDto
+    public class TokenUserDto
     {
         public string Token { get; set; } = null!;
         public Guid id { get; set; }
