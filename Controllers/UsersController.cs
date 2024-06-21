@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MealMasterAPI.Excepcions;
 using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
@@ -34,9 +35,9 @@ namespace MealMasterAPI.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = userDto });
             
-            }catch(Exception ex)
+            }catch(UserNotFoundException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }
@@ -52,7 +53,7 @@ namespace MealMasterAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }
@@ -67,7 +68,7 @@ namespace MealMasterAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }

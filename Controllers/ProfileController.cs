@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MealMasterAPI.Excepcions;
 using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
@@ -31,7 +32,7 @@ namespace MealMasterAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }
@@ -40,16 +41,15 @@ namespace MealMasterAPI.Controllers
         [HttpGet("{id:guid}")]
         public IActionResult GetProfile(Guid id)
         {
-            ProfileDTO profile = _upRepo.GetProfile(id);
-
             try
-            {
+            {   
+                ProfileDTO profile = _upRepo.GetProfile(id);
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = profile });
 
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }
@@ -62,13 +62,13 @@ namespace MealMasterAPI.Controllers
                 var res = _upRepo.UpdateProfile(id, profiledto);
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = res });
             }
-            catch (Exception ex)
+            catch (UserNotFoundException ex)
             {
                 if (ex.Message == "User not found.")
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, new { response = "User not found." });
+                    return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "ok", response = "User not found." });
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { mensaje = ex.Message, response = "Hubo un error, intentelo de nuevo" });
             }
         }
 

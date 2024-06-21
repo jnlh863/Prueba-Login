@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MealMasterAPI.Excepcions;
 using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
@@ -17,12 +18,10 @@ namespace MealMasterAPI.Controllers
     public class AuthenticatorController : Controller
     {
         private readonly IUser _uRepo;
-        private readonly ISendEmail _sendRepo;
 
-        public AuthenticatorController(IUser uRepo, ISendEmail sendRepo)
+        public AuthenticatorController(IUser uRepo)
         {
             _uRepo = uRepo;
-            _sendRepo = sendRepo;
         }
 
         [AllowAnonymous]
@@ -34,9 +33,9 @@ namespace MealMasterAPI.Controllers
                 UserTokenDTO tk = _uRepo.LoginUser(login);
                 return StatusCode(StatusCodes.Status202Accepted, new { mensaje = "ok", response = tk });
             }
-            catch (Exception ex)
+            catch (LoginException ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = ex.Message });
+                return StatusCode(StatusCodes.Status404NotFound, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }
@@ -48,14 +47,21 @@ namespace MealMasterAPI.Controllers
             {
                 var token = _uRepo.RequestPasswordResetToken(req);
                 var resetLink = Url.Action("ResetPassword", "Authenticator", new { token = token.Token, email = req.email }, Request.Scheme);
-
-                _sendRepo.SendPasswordResetEmail(req.email, resetLink);
+                
+                if (resetLink != null)
+                {
+                    _uRepo.SendPasswordResetEmail(req.email, resetLink);
+                }
+                else
+                {
+                    throw new EmailNotSendException();
+                }
 
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = "The email sends in your bandage" });
             }
-            catch (Exception ex)
+            catch (EmailNotSendException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { mensaje = ex.Message, response = "Hubo un error" });
+                return StatusCode(StatusCodes.Status400BadRequest, new { mensaje = "Hubo un error, intentelo de nuevo", response = ex.Message });
 
             }
         }

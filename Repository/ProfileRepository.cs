@@ -3,6 +3,7 @@ using MealMasterAPI.Data;
 using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
+using MealMasterAPI.Excepcions;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -20,9 +21,9 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public string CreateProfile(Guid idu, ProfileDTO profile)
+        public string CreateProfile(Guid id, ProfileDTO profile)
         {
-            var c = _bd.Users.Find(idu);
+            var c = _bd.Users.Find(id);
 
             if (c == null)
             {
@@ -31,7 +32,7 @@ namespace MealMasterAPI.Repository
 
             UserProfile us = new UserProfile
             {
-                id = idu,
+                id = id,
                 sex = profile.sex,
                 stature = profile.stature,
                 weight = profile.weight,
@@ -51,13 +52,14 @@ namespace MealMasterAPI.Repository
             var user = _bd.UsersProfile.Find(userid);
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                throw new UserNotFoundException();
             }
 
             ProfileDTO profile = _mapper.Map<ProfileDTO>(user);
 
             return profile;
         }
+    
 
         public string UpdateProfile(Guid id, ProfileDTO profiledto)
         {
@@ -65,7 +67,7 @@ namespace MealMasterAPI.Repository
 
             if (up == null)
             {
-                throw new Exception("User not found.");
+                return "User not found.";
             }
 
             up.sex = profiledto.sex;

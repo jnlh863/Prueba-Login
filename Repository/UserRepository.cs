@@ -1,5 +1,8 @@
-﻿using Azure.Core;
+﻿using Azure.Communication.Email;
+using Azure;
+using Azure.Core;
 using MealMasterAPI.Data;
+using MealMasterAPI.Excepcions;
 using MealMasterAPI.Models;
 using MealMasterAPI.Models.Dtos;
 using MealMasterAPI.Repository.IRepository;
@@ -17,12 +20,13 @@ namespace MealMasterAPI.Repository
     public class UserRepository : IUser
     {
         private readonly AppDbContext _bd;
-        private string clave;
+        private string? clave;
 
         public UserRepository(AppDbContext bd)
         {
             _bd = bd;
-            clave = Environment.GetEnvironmentVariable("TOKEN");
+            clave = Environment.GetEnvironmentVariable("TOKEN") ?? "ABCD67890_secure_key_32_characters";
+
         }
 
         public string CreateUser(RegisterDTO user)
@@ -52,26 +56,19 @@ namespace MealMasterAPI.Repository
             var user = _bd.Users.Find(userid);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new UserNotFoundException();
             }
             return user;
         }
 
-        public ICollection<User> GetUsers()
-        {
-           
-            return _bd.Users.OrderBy(c => c.username).ToList();
-            
-        }
-
-        public UserTokenDTO LoginUser(LoginDTO loginDTO)
+        public UserTokenDTO LoginUser(LoginDTO userDTO)
         {
             var user = _bd.Users.FirstOrDefault(
-                    u => u.email.ToLower() == loginDTO.email.ToLower());
+                    u => u.email.ToLower() == userDTO.email.ToLower());
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginDTO.password, user.password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(userDTO.password, user.password))
             {
-                throw new Exception("User not found or invalidad password.");
+                throw new LoginException();
             }
 
             var tok = new JwtSecurityTokenHandler();
@@ -92,12 +89,17 @@ namespace MealMasterAPI.Repository
             };
 
             var token = tok.CreateToken(tokenDescriptor);
-            var u = _bd.Users.FirstOrDefault(u => u.email == loginDTO.email);
+            var uid = _bd.Users.FirstOrDefault(u => u.email == userDTO.email);
+
+            if(uid == null)
+            {
+                throw new UserNotFoundException();
+            }
 
             UserTokenDTO ut = new UserTokenDTO()
             {
                 Token = tok.WriteToken(token),
-                id = u.id
+                id = uid.id
             };
 
             return ut;
@@ -141,6 +143,19 @@ namespace MealMasterAPI.Repository
             return ut;
         }
 
+        public void SendPasswordResetEmail(string email, string resetLink)
+        {
+            EmailClient emailClient = new EmailClient(Environment.GetEnvironmentVariable("KEY_API"));
+            emailClient.Send(
+                WaitUntil.Completed,
+                senderAddress: "DoNotReply@0956d554-7718-46a5-9e08-1780a9e31fc1.azurecomm.net",
+                recipientAddress: email,
+                subject: "Password Reset",
+                htmlContent: $"<html><body><h2>Restablecimiento de contraseña</h2><p>Hola,</p><p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.</p><p>Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:</p><p><a href=\"{resetLink}\">Click aquí para restablecer tu contraseña</a></p><p>Si no solicitaste este cambio, por favor ignora este correo.</p><p>Gracias,</p><p>Tu equipo de soporte</p></body></html>",
+                plainTextContent: $"Click the link to reset your password: {resetLink}");
+
+        }
+
         public bool ResetPassword(string email, string token, string newpassword)
         {
             var principal = GetPrincipalFromExpiredToken(token);
@@ -163,19 +178,6 @@ namespace MealMasterAPI.Repository
             Guardar();
 
             return true;
-        }
-
-        public string UpdateRol(Guid id, string role)
-        {
-            var user = _bd.Users.Find(id);
-
-            if (user == null)
-            {
-                return "User not found.";
-            }
-            user.Role = role;
-           
-            return "Role assigned successfully.";
         }
 
         public string UpdateUser(Guid id, UserDTO userdto)

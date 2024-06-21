@@ -5,8 +5,6 @@ namespace MealMasterAPI.Repository.IRepository
 {
     public interface IUser
     {
-        ICollection<User> GetUsers();
-
         User GetUser(Guid userid);
 
         string CreateUser(RegisterDTO user);
@@ -21,7 +19,7 @@ namespace MealMasterAPI.Repository.IRepository
 
         bool ResetPassword(string email, string token, string newpassword);
 
-        string UpdateRol(Guid id, string role);
+        void SendPasswordResetEmail(string email, string resetLink);
 
         bool Guardar();
     }

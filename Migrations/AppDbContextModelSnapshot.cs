@@ -92,8 +92,7 @@ namespace MealMasterAPI.Migrations
 
             modelBuilder.Entity("MealMasterAPI.Models.User", b =>
                 {
-                    b.Navigation("profile")
-                        .IsRequired();
+                    b.Navigation("profile");
                 });
 #pragma warning restore 612, 618
         }

@@ -26,7 +26,7 @@ namespace MealMasterAPI.Models
         [DataType(DataType.Date)]
         public DateTime created_at { get; set; } = DateTime.Now;
 
-        public UserProfile profile { get; set; }
+        public UserProfile? profile { get; set; }
 
     }
 }

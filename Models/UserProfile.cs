@@ -23,7 +23,7 @@ namespace MealMasterAPI.Models
         [Required(ErrorMessage = "This field is obligatory")]
         public string protocol { get; set; } = null!;
 
-        public User user { get; set; }
+        public User? user { get; set; }
 
 
     }
