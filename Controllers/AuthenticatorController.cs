@@ -18,7 +18,7 @@ namespace MealMasterAPI.Controllers
     public class AuthenticatorController : Controller 
     {
         private readonly IUser _uRepo;
-
+         
         public AuthenticatorController(IUser uRepo)
         {
             _uRepo = uRepo;
