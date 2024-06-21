@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MealMasterAPI.Models.Dtos
 {
-    public class ProfileDTO
+    public class ProfileDto
     {
         [JsonRequired]
         public Guid id { get; set; }

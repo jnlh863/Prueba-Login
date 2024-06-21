@@ -21,7 +21,7 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public string CreateProfile(Guid id, ProfileDTO profile)
+        public string CreateProfile(Guid id, ProfileDto profile)
         {
             var c = _bd.Users.Find(id);
 
@@ -47,7 +47,7 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public ProfileDTO GetProfile(Guid userid)
+        public ProfileDto GetProfile(Guid userid)
         {
             var user = _bd.UsersProfile.Find(userid);
             if (user == null)
@@ -55,13 +55,13 @@ namespace MealMasterAPI.Repository
                 throw new UserNotFoundException();
             }
 
-            ProfileDTO profile = _mapper.Map<ProfileDTO>(user);
+            ProfileDto profile = _mapper.Map<ProfileDto>(user);
 
             return profile;
         }
     
 
-        public string UpdateProfile(Guid id, ProfileDTO profiledto)
+        public string UpdateProfile(Guid id, ProfileDto profiledto)
         {
             var up = _bd.UsersProfile.Find(id);
 

@@ -26,11 +26,11 @@ namespace MealMasterAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult LoginUser([FromBody] LoginDTO login)
+        public IActionResult LoginUser([FromBody] LoginDto login)
         {
             try
             {
-                UserTokenDTO tk = _uRepo.LoginUser(login);
+                UserTokenDto tk = _uRepo.LoginUser(login);
                 return StatusCode(StatusCodes.Status202Accepted, new { mensaje = "ok", response = tk });
             }
             catch (LoginException ex)
@@ -41,7 +41,7 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public IActionResult ForgotPassword([FromBody] ForgotPassDTO req)
+        public IActionResult ForgotPassword([FromBody] ForgotPassDto req)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace MealMasterAPI.Controllers
         {
             try
             {
-                var model = new ResetPassDTO { token = token, email = email };
+                var model = new ResetPassDto { token = token, email = email };
                 return View(model);
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public IActionResult ResetPassword([FromBody] ResetPassDTO model)
+        public IActionResult ResetPassword([FromBody] ResetPassDto model)
         {
             try
             {

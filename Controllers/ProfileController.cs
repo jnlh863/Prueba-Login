@@ -23,7 +23,7 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPost("{id:guid}")]
-        public IActionResult CreateProfile(Guid id, [FromBody] ProfileDTO profile)
+        public IActionResult CreateProfile(Guid id, [FromBody] ProfileDto profile)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace MealMasterAPI.Controllers
         {
             try
             {   
-                ProfileDTO profile = _upRepo.GetProfile(id);
+                ProfileDto profile = _upRepo.GetProfile(id);
                 return StatusCode(StatusCodes.Status200OK, new { mensaje = "ok", response = profile });
 
             }
@@ -55,7 +55,7 @@ namespace MealMasterAPI.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public IActionResult UpdateProfile(Guid id, [FromBody] ProfileDTO profiledto)
+        public IActionResult UpdateProfile(Guid id, [FromBody] ProfileDto profiledto)
         {
             try
             {

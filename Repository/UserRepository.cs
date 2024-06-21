@@ -29,7 +29,7 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public string CreateUser(RegisterDTO user)
+        public string CreateUser(RegisterDto user)
         {
             if(user == null)
             {
@@ -61,7 +61,7 @@ namespace MealMasterAPI.Repository
             return user;
         }
 
-        public UserTokenDTO LoginUser(LoginDTO userDTO)
+        public UserTokenDto LoginUser(LoginDto userDTO)
         {
             var user = _bd.Users.FirstOrDefault(
                     u => u.email.ToLower() == userDTO.email.ToLower());
@@ -96,7 +96,7 @@ namespace MealMasterAPI.Repository
                 throw new UserNotFoundException();
             }
 
-            UserTokenDTO ut = new UserTokenDTO()
+            UserTokenDto ut = new UserTokenDto()
             {
                 Token = tok.WriteToken(token),
                 id = uid.id
@@ -106,7 +106,7 @@ namespace MealMasterAPI.Repository
 
         }
 
-        public UserTokenDTO RequestPasswordResetToken(ForgotPassDTO request) 
+        public UserTokenDto RequestPasswordResetToken(ForgotPassDto request) 
         {
             var user = _bd.Users.FirstOrDefault(u => u.email == request.email);
 
@@ -133,7 +133,7 @@ namespace MealMasterAPI.Repository
 
             var token = tok.CreateToken(tokenDescriptor);
 
-            UserTokenDTO ut = new UserTokenDTO()
+            UserTokenDto ut = new UserTokenDto()
             {
                 Token = tok.WriteToken(token),
                 id = user.id
@@ -180,7 +180,7 @@ namespace MealMasterAPI.Repository
             return true;
         }
 
-        public string UpdateUser(Guid id, UserDTO userdto)
+        public string UpdateUser(Guid id, UserDto userdto)
         {
             var user = _bd.Users.Find(id);
 

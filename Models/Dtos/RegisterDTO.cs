@@ -2,7 +2,7 @@
 
 namespace MealMasterAPI.Models.Dtos
 {
-    public class RegisterDTO
+    public class RegisterDto
     {
         [Required(ErrorMessage = "The username is obligatory")]
         [MaxLength(50, ErrorMessage = "The maximum number of characters is 50.")]
