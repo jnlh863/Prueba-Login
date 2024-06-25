@@ -83,7 +83,7 @@ namespace MealMasterAPI.Repository
 
         public bool Guardar()
         {
-            return _bd.SaveChanges() >= 0 ? true : false;
+            return _bd.SaveChanges() >= 0;
         }
     }
 }

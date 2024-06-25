@@ -20,7 +20,7 @@ namespace MealMasterAPI.Repository
     public class UserRepository : IUser
     {
         private readonly AppDbContext _bd;
-        private string? clave;
+        private readonly string clave;
 
         public UserRepository(AppDbContext bd)
         {
@@ -63,8 +63,9 @@ namespace MealMasterAPI.Repository
 
         public TokenUserDto LoginUser(LoginUserDto userDTO)
         {
-            var user = _bd.Users.FirstOrDefault(
-                    u => u.email.ToLower() == userDTO.email.ToLower());
+            var user = _bd.Users.AsEnumerable() 
+            .FirstOrDefault(u => string.Equals(u.email, userDTO.email, StringComparison.OrdinalIgnoreCase));
+
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(userDTO.password, user.password))
             {
@@ -112,7 +113,7 @@ namespace MealMasterAPI.Repository
 
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new UserNotFoundException();
             }
 
             var tok = new JwtSecurityTokenHandler();
@@ -213,7 +214,7 @@ namespace MealMasterAPI.Repository
         
         public bool Guardar()
         {
-            return _bd.SaveChanges() >= 0 ? true : false;
+            return _bd.SaveChanges() >= 0;
         }
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
