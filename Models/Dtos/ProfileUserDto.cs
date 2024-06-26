@@ -18,7 +18,7 @@ namespace MealMasterAPI.Models.Dtos
         [JsonProperty(Required = Required.Always)]
         public int weight { get; set; }
 
-        public string protocol { get; set; } = null!;
+        public string protocolo { get; set; } = null!;
 
 
     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MealMasterAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240621031109_AzureDb")]
-    partial class AzureDb
+    [Migration("20240626192838_Azuredb")]
+    partial class Azuredb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace MealMasterAPI.Migrations
                     b.Property<Guid>("id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("protocol")
+                    b.Property<string>("protocolo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

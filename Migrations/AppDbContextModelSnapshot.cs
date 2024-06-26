@@ -59,7 +59,7 @@ namespace MealMasterAPI.Migrations
                     b.Property<Guid>("id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("protocol")
+                    b.Property<string>("protocolo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

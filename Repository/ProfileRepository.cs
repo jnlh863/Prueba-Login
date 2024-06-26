@@ -36,7 +36,7 @@ namespace MealMasterAPI.Repository
                 sex = profile.sex,
                 stature = profile.stature,
                 weight = profile.weight,
-                protocol = profile.protocol,
+                protocolo = profile.protocolo,
                 user = c
             };
 
@@ -73,7 +73,7 @@ namespace MealMasterAPI.Repository
             up.sex = profiledto.sex;
             up.stature = profiledto.stature;
             up.weight = profiledto.weight;
-            up.protocol = profiledto.protocol;
+            up.protocolo = profiledto.protocolo;
 
             _bd.UsersProfile.Update(up);
             Guardar();

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MealMasterAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AzureDb : Migration
+    public partial class Azuredb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace MealMasterAPI.Migrations
                     sex = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     stature = table.Column<int>(type: "int", nullable: false),
                     weight = table.Column<int>(type: "int", nullable: false),
-                    protocol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    protocolo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

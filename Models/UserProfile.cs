@@ -21,7 +21,7 @@ namespace MealMasterAPI.Models
         public int weight { get; set; }
 
         [Required(ErrorMessage = "This field is obligatory")]
-        public string protocol { get; set; } = null!;
+        public string protocolo { get; set; } = null!;
 
         public User? user { get; set; }
 
